@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from fastapi import FastAPI, HTTPException, Query
 
+from app.core.storage import init_db
 from app.core.config import load_settings
 from app.jobs.extract_job import run_once
 from app.core.pipeline_io import PipelineIO
@@ -12,6 +13,9 @@ app = FastAPI(title="ANA Pipeline Challenge", version="0.1.0")
 
 @app.get("/health")
 def health():
+    s = load_settings()
+    con = init_db(s.db_path)  # enquanto for NotImplementedError, falha
+    con.close()
     return {"status": "ok"}
 
 
