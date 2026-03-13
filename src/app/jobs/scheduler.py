@@ -110,3 +110,11 @@ def start_scheduler(job: Optional[Callable] = None) -> PipelineScheduler:
     scheduler = PipelineScheduler(job=job)
     scheduler.start(daemon=True)
     return scheduler
+
+from datetime import datetime, timedelta
+
+
+def compute_next_run(last: datetime, interval_seconds: int) -> datetime:
+    if interval_seconds <= 0:
+        raise ValueError("interval_seconds must be greater than 0")
+    return last + timedelta(seconds=interval_seconds)
